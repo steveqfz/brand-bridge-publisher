@@ -59,7 +59,7 @@ final readonly class PlayerDetailsDTO
         public ?array $payload,
 
         /** Registration source */
-        public ?string $registerFrom,
+        public ?int $registerFrom,
 
         /** Query string used during signup */
         public ?string $queryString,
