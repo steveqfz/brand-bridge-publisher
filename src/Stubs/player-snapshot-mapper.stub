@@ -8,6 +8,7 @@ use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
 use BrandBridge\DTOs\V1\PlayerSnapshot;
 use BrandBridge\Enums\BrandKey;
 use Illuminate\Database\DatabaseManager;
+use BrandBridge\Enums\PlayerStatus;
 
 final class PlayerSnapshotMapper implements PlayerSnapshotMapperInterface
 {
@@ -18,7 +19,7 @@ final class PlayerSnapshotMapper implements PlayerSnapshotMapperInterface
     public function map(string $sourcePlayerId): ?PlayerSnapshot
     {
         $row = $this->db->connection(config('brand-bridge.connection'))
-            ->table('players) // TODO: change to your players table
+            ->table('players') // TODO: change to your players table
             ->where('id', $sourcePlayerId) // TODO: change to your PK column
             ->first();
 
@@ -34,7 +35,7 @@ final class PlayerSnapshotMapper implements PlayerSnapshotMapperInterface
             email: (string) $row->email,
             password: $row->password ?? null,
             currencyCode: strtoupper((string) ($row->currency_code ?? $row->currency ?? 'USD')),
-            status: (string) ($row->status ?? 'active'),
+            status: PlayerStatus::from((string) $row->status),
             banned: (bool) ($row->banned ?? false),
             excluded: (bool) ($row->excluded ?? false),
             suspended: (bool) ($row->suspended ?? false),

@@ -6,7 +6,6 @@ namespace App\BrandBridge\Mappers;
 
 use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
 use BrandBridge\DTOs\V1\PlayerDetailsDTO;
-use BrandBridge\Enums\PlayerStatus;
 use Illuminate\Database\DatabaseManager;
 
 final class PlayerDetailsMapper implements PlayerDetailsMapperInterface
