@@ -2,19 +2,9 @@
 
 declare(strict_types=1);
 
-use BrandBridge\Contracts\Mappers\BettingLimitMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerTagMapperInterface;
-use BrandBridge\Contracts\Mappers\SelfExclusionMapperInterface;
-use BrandBridge\Contracts\Mappers\VipCommentMapperInterface;
-use BrandBridge\Contracts\Mappers\VipContactMapperInterface;
-use BrandBridge\Contracts\Mappers\VipGroupMapperInterface;
-use BrandBridge\Contracts\Mappers\VipManagerMapperInterface;
-use BrandBridge\Contracts\Mappers\VipMilestoneMapperInterface;
-use BrandBridge\Contracts\Mappers\VipProfileMapperInterface;
-use BrandBridge\Contracts\Mappers\VipPromiseMapperInterface;
-use BrandBridge\Contracts\Mappers\VipReminderMapperInterface;
 use BrandBridge\DTOs\V1\PlayerDetailsDTO;
 use BrandBridge\DTOs\V1\PlayerSnapshot;
 use BrandBridge\Enums\BrandKey;
@@ -33,51 +23,11 @@ function makeAssemblerWithNullPlayer(): OnboardingPayloadAssembler
     $tagMapper = new class implements PlayerTagMapperInterface {
         public function mapAll(string $sourcePlayerId): array { return []; }
     };
-    $bettingLimitMapper = new class implements BettingLimitMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\ResponsibleGaming\BettingLimitDTO { return null; }
-    };
-    $selfExclusionMapper = new class implements SelfExclusionMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\ResponsibleGaming\SelfExclusionDTO { return null; }
-    };
-    $vipProfileMapper = new class implements VipProfileMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipProfileDTO { return null; }
-    };
-    $vipGroupMapper = new class implements VipGroupMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipGroupDTO { return null; }
-    };
-    $vipManagerMapper = new class implements VipManagerMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipManagerDTO { return null; }
-    };
-    $vipCommentMapper = new class implements VipCommentMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
-    $vipMilestoneMapper = new class implements VipMilestoneMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
-    $vipPromiseMapper = new class implements VipPromiseMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
-    $vipReminderMapper = new class implements VipReminderMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
-    $vipContactMapper = new class implements VipContactMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
 
     return new OnboardingPayloadAssembler(
         $nullSnapshotMapper,
         $detailsMapper,
         $tagMapper,
-        $bettingLimitMapper,
-        $selfExclusionMapper,
-        $vipProfileMapper,
-        $vipGroupMapper,
-        $vipManagerMapper,
-        $vipCommentMapper,
-        $vipMilestoneMapper,
-        $vipPromiseMapper,
-        $vipReminderMapper,
-        $vipContactMapper,
     );
 }
 
@@ -125,51 +75,11 @@ function makeAssemblerWithValidPlayer(): OnboardingPayloadAssembler
     $tagMapper = new class implements PlayerTagMapperInterface {
         public function mapAll(string $sourcePlayerId): array { return []; }
     };
-    $bettingLimitMapper = new class implements BettingLimitMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\ResponsibleGaming\BettingLimitDTO { return null; }
-    };
-    $selfExclusionMapper = new class implements SelfExclusionMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\ResponsibleGaming\SelfExclusionDTO { return null; }
-    };
-    $vipProfileMapper = new class implements VipProfileMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipProfileDTO { return null; }
-    };
-    $vipGroupMapper = new class implements VipGroupMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipGroupDTO { return null; }
-    };
-    $vipManagerMapper = new class implements VipManagerMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipManagerDTO { return null; }
-    };
-    $vipCommentMapper = new class implements VipCommentMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
-    $vipMilestoneMapper = new class implements VipMilestoneMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
-    $vipPromiseMapper = new class implements VipPromiseMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
-    $vipReminderMapper = new class implements VipReminderMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
-    $vipContactMapper = new class implements VipContactMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
 
     return new OnboardingPayloadAssembler(
         $snapshotMapper,
         $detailsMapper,
         $tagMapper,
-        $bettingLimitMapper,
-        $selfExclusionMapper,
-        $vipProfileMapper,
-        $vipGroupMapper,
-        $vipManagerMapper,
-        $vipCommentMapper,
-        $vipMilestoneMapper,
-        $vipPromiseMapper,
-        $vipReminderMapper,
-        $vipContactMapper,
     );
 }
 

@@ -5,19 +5,9 @@ declare(strict_types=1);
 namespace BrandBridge;
 
 use BrandBridge\Contracts\EligibilityCheckerInterface;
-use BrandBridge\Contracts\Mappers\BettingLimitMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerTagMapperInterface;
-use BrandBridge\Contracts\Mappers\SelfExclusionMapperInterface;
-use BrandBridge\Contracts\Mappers\VipCommentMapperInterface;
-use BrandBridge\Contracts\Mappers\VipContactMapperInterface;
-use BrandBridge\Contracts\Mappers\VipGroupMapperInterface;
-use BrandBridge\Contracts\Mappers\VipManagerMapperInterface;
-use BrandBridge\Contracts\Mappers\VipMilestoneMapperInterface;
-use BrandBridge\Contracts\Mappers\VipProfileMapperInterface;
-use BrandBridge\Contracts\Mappers\VipPromiseMapperInterface;
-use BrandBridge\Contracts\Mappers\VipReminderMapperInterface;
 use BrandBridge\Exceptions\MapperNotPublishedException;
 use BrandBridge\Services\DefaultEligibilityChecker;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -31,16 +21,6 @@ final class BrandBridgeServiceProvider extends ServiceProvider
         PlayerSnapshotMapperInterface::class => 'App\\BrandBridge\\Mappers\\PlayerSnapshotMapper',
         PlayerDetailsMapperInterface::class  => 'App\\BrandBridge\\Mappers\\PlayerDetailsMapper',
         PlayerTagMapperInterface::class      => 'App\\BrandBridge\\Mappers\\PlayerTagMapper',
-        BettingLimitMapperInterface::class   => 'App\\BrandBridge\\Mappers\\BettingLimitMapper',
-        SelfExclusionMapperInterface::class  => 'App\\BrandBridge\\Mappers\\SelfExclusionMapper',
-        VipProfileMapperInterface::class     => 'App\\BrandBridge\\Mappers\\VipProfileMapper',
-        VipGroupMapperInterface::class       => 'App\\BrandBridge\\Mappers\\VipGroupMapper',
-        VipManagerMapperInterface::class     => 'App\\BrandBridge\\Mappers\\VipManagerMapper',
-        VipCommentMapperInterface::class     => 'App\\BrandBridge\\Mappers\\VipCommentMapper',
-        VipMilestoneMapperInterface::class   => 'App\\BrandBridge\\Mappers\\VipMilestoneMapper',
-        VipPromiseMapperInterface::class     => 'App\\BrandBridge\\Mappers\\VipPromiseMapper',
-        VipReminderMapperInterface::class    => 'App\\BrandBridge\\Mappers\\VipReminderMapper',
-        VipContactMapperInterface::class     => 'App\\BrandBridge\\Mappers\\VipContactMapper',
     ];
 
     public function register(): void
@@ -91,16 +71,6 @@ final class BrandBridgeServiceProvider extends ServiceProvider
             "$base/player-snapshot-mapper.stub" => "$target/PlayerSnapshotMapper.php",
             "$base/player-details-mapper.stub"  => "$target/PlayerDetailsMapper.php",
             "$base/player-tag-mapper.stub"      => "$target/PlayerTagMapper.php",
-            "$base/betting-limit-mapper.stub"   => "$target/BettingLimitMapper.php",
-            "$base/self-exclusion-mapper.stub"   => "$target/SelfExclusionMapper.php",
-            "$base/vip-profile-mapper.stub"     => "$target/VipProfileMapper.php",
-            "$base/vip-group-mapper.stub"       => "$target/VipGroupMapper.php",
-            "$base/vip-manager-mapper.stub"     => "$target/VipManagerMapper.php",
-            "$base/vip-comment-mapper.stub"     => "$target/VipCommentMapper.php",
-            "$base/vip-milestone-mapper.stub"   => "$target/VipMilestoneMapper.php",
-            "$base/vip-promise-mapper.stub"     => "$target/VipPromiseMapper.php",
-            "$base/vip-reminder-mapper.stub"    => "$target/VipReminderMapper.php",
-            "$base/vip-contact-mapper.stub"     => "$target/VipContactMapper.php",
         ];
     }
 

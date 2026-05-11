@@ -2,12 +2,9 @@
 
 declare(strict_types=1);
 
-use BrandBridge\Contracts\Mappers\BettingLimitMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerTagMapperInterface;
-use BrandBridge\Contracts\Mappers\SelfExclusionMapperInterface;
-use BrandBridge\Contracts\Mappers\VipCommentMapperInterface;
 use BrandBridge\Contracts\Mappers\VipContactMapperInterface;
 use BrandBridge\Contracts\Mappers\VipGroupMapperInterface;
 use BrandBridge\Contracts\Mappers\VipManagerMapperInterface;
@@ -42,36 +39,6 @@ function bindNullMappers(\Illuminate\Foundation\Application $app): void
         public function map(string $sourcePlayerId): ?PlayerDetailsDTO { return null; }
     });
     $app->bind(PlayerTagMapperInterface::class, fn () => new class implements PlayerTagMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(BettingLimitMapperInterface::class, fn () => new class implements BettingLimitMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\ResponsibleGaming\BettingLimitDTO { return null; }
-    });
-    $app->bind(SelfExclusionMapperInterface::class, fn () => new class implements SelfExclusionMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\ResponsibleGaming\SelfExclusionDTO { return null; }
-    });
-    $app->bind(VipProfileMapperInterface::class, fn () => new class implements VipProfileMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipProfileDTO { return null; }
-    });
-    $app->bind(VipGroupMapperInterface::class, fn () => new class implements VipGroupMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipGroupDTO { return null; }
-    });
-    $app->bind(VipManagerMapperInterface::class, fn () => new class implements VipManagerMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipManagerDTO { return null; }
-    });
-    $app->bind(VipCommentMapperInterface::class, fn () => new class implements VipCommentMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(VipMilestoneMapperInterface::class, fn () => new class implements VipMilestoneMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(VipPromiseMapperInterface::class, fn () => new class implements VipPromiseMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(VipReminderMapperInterface::class, fn () => new class implements VipReminderMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(VipContactMapperInterface::class, fn () => new class implements VipContactMapperInterface {
         public function mapAll(string $sourcePlayerId): array { return []; }
     });
 }
@@ -118,36 +85,6 @@ function bindValidMappers(\Illuminate\Foundation\Application $app): void
         }
     });
     $app->bind(PlayerTagMapperInterface::class, fn () => new class implements PlayerTagMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(BettingLimitMapperInterface::class, fn () => new class implements BettingLimitMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\ResponsibleGaming\BettingLimitDTO { return null; }
-    });
-    $app->bind(SelfExclusionMapperInterface::class, fn () => new class implements SelfExclusionMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\ResponsibleGaming\SelfExclusionDTO { return null; }
-    });
-    $app->bind(VipProfileMapperInterface::class, fn () => new class implements VipProfileMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipProfileDTO { return null; }
-    });
-    $app->bind(VipGroupMapperInterface::class, fn () => new class implements VipGroupMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipGroupDTO { return null; }
-    });
-    $app->bind(VipManagerMapperInterface::class, fn () => new class implements VipManagerMapperInterface {
-        public function map(string $sourcePlayerId): ?\BrandBridge\DTOs\V1\Vip\VipManagerDTO { return null; }
-    });
-    $app->bind(VipCommentMapperInterface::class, fn () => new class implements VipCommentMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(VipMilestoneMapperInterface::class, fn () => new class implements VipMilestoneMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(VipPromiseMapperInterface::class, fn () => new class implements VipPromiseMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(VipReminderMapperInterface::class, fn () => new class implements VipReminderMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    });
-    $app->bind(VipContactMapperInterface::class, fn () => new class implements VipContactMapperInterface {
         public function mapAll(string $sourcePlayerId): array { return []; }
     });
 }
