@@ -9,9 +9,6 @@ use BrandBridge\Enums\PayloadVersion;
 
 final readonly class OnboardingPayload
 {
-    /**
-     * @param list<PlayerTagDTO> $tags
-     */
     public function __construct(
         /** Payload schema version */
         public PayloadVersion $version,
@@ -23,8 +20,8 @@ final readonly class OnboardingPayload
         public PlayerSnapshot $player,
         /** Extended player details */
         public PlayerDetailsDTO $details,
-        /** Player tags collection */
-        public array $tags,
+        /** Extended oauth players */
+        public array $oauths,
         /** Timestamp when this snapshot was taken */
         public \DateTimeImmutable $snapshotTakenAt,
     ) {}
@@ -38,9 +35,9 @@ final readonly class OnboardingPayload
             sourcePlayerId: (string) $data['source_player_id'],
             player: PlayerSnapshot::fromArray((array) $data['player']),
             details: PlayerDetailsDTO::fromArray((array) $data['details']),
-            tags: array_map(
-                static fn(array $tag): PlayerTagDTO => PlayerTagDTO::fromArray($tag),
-                (array) $data['tags'],
+            oauths: array_map(
+                static fn(array $oauth): OauthPlayersDTO => OauthPlayersDTO::fromArray($oauth),
+                (array) $data['oauths'],
             ),
             snapshotTakenAt: new \DateTimeImmutable($data['snapshot_taken_at']),
         );
@@ -55,9 +52,9 @@ final readonly class OnboardingPayload
             'source_player_id' => $this->sourcePlayerId,
             'player' => $this->player->toArray(),
             'details' => $this->details->toArray(),
-            'tags' => array_map(
-                static fn(PlayerTagDTO $tag): array => $tag->toArray(),
-                $this->tags,
+            'oauths' => array_map(
+                static fn(OauthPlayersDTO $oauth): array => $oauth->toArray(),
+                $this->oauths,
             ),
             'snapshot_taken_at' => $this->snapshotTakenAt->format(\DATE_RFC3339),
         ];

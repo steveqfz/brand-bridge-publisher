@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace BrandBridge\Contracts\Mappers;
 
-use BrandBridge\DTOs\V1\PlayerTagDTO;
+use BrandBridge\DTOs\V1\OauthPlayersDTO;
 
-interface PlayerTagMapperInterface
+interface OauthPlayersMapperInterface
 {
-    /** @return PlayerTagDTO[] */
+    /** @return OauthPlayersDTO[] */
     public function mapAll(string $sourcePlayerId): array;
 }

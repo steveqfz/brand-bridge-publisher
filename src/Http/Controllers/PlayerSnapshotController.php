@@ -27,7 +27,6 @@ final class PlayerSnapshotController
         return new JsonResponse([
             'version' => 'v1',
             'data' => $payload->toArray(),
-            'snapshot_taken_at' => $payload->snapshotTakenAt->format(\DATE_RFC3339),
         ]);
     }
 }

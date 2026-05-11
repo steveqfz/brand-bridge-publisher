@@ -18,7 +18,7 @@ final class PlayerSnapshotMapper implements PlayerSnapshotMapperInterface
     public function map(string $sourcePlayerId): ?PlayerSnapshot
     {
         $row = $this->db->connection(config('brand-bridge.connection'))
-            ->table('users') // TODO: change to your players table
+            ->table('players) // TODO: change to your players table
             ->where('id', $sourcePlayerId) // TODO: change to your PK column
             ->first();
 
@@ -29,18 +29,52 @@ final class PlayerSnapshotMapper implements PlayerSnapshotMapperInterface
         return new PlayerSnapshot(
             sourcePlayerId: (string) $row->id, // TODO
             sourceBrand: BrandKey::from(config('brand-bridge.brand_key')),
-            email: $row->email, // TODO
-            username: $row->username, // TODO
-            firstName: $row->first_name ?? null, // TODO
-            lastName: $row->last_name ?? null, // TODO
-            dateOfBirth: $row->date_of_birth ? new \DateTimeImmutable($row->date_of_birth) : null, // TODO
-            country: strtoupper((string) ($row->country ?? '')), // TODO
-            phoneNumber: $row->phone ?? null, // TODO
-            registeredAt: new \DateTimeImmutable($row->created_at), // TODO
-            lastLoginAt: $row->last_login_at ? new \DateTimeImmutable($row->last_login_at) : null, // TODO
-            kycReference: $row->kyc_id ?? null, // TODO
-            currency: strtoupper((string) ($row->currency ?? 'USD')), // TODO
-            language: $row->language ?? null, // TODO
+            vipSettingId: $row->vip_setting_id ?? null,
+            username: (string) $row->username,
+            email: (string) $row->email,
+            password: $row->password ?? null,
+            currencyCode: strtoupper((string) ($row->currency_code ?? $row->currency ?? 'USD')),
+            status: (string) ($row->status ?? 'active'),
+            banned: (bool) ($row->banned ?? false),
+            excluded: (bool) ($row->excluded ?? false),
+            suspended: (bool) ($row->suspended ?? false),
+            kickedAt: isset($row->kicked_at)
+                ? new \DateTimeImmutable($row->kicked_at)
+                : null,
+            lastLoggedInAt: isset($row->last_logged_in_at)
+                ? new \DateTimeImmutable($row->last_logged_in_at)
+                : null,
+            phoneVerifiedAt: isset($row->phone_verified_at)
+                ? new \DateTimeImmutable($row->phone_verified_at)
+                : null,
+            betLimit: isset($row->bet_limit)
+                ? (float) $row->bet_limit
+                : null,
+            isTestPlayer: (bool) ($row->is_test_player ?? false),
+            agentCode: $row->agent_code ?? null,
+            batchId: $row->batch_id ?? null,
+            phoneNumber: $row->phone_number
+                ?? $row->phone
+                ?? null,
+            isHoldWithdrawal: (bool) ($row->is_hold_withdrawal ?? false),
+            uuid: (string) ($row->uuid ?? $row->id),
+            lastOnlineAt: isset($row->last_online_at)
+                ? new \DateTimeImmutable($row->last_online_at)
+                : null,
+            lastOfflineAt: isset($row->last_offline_at)
+                ? new \DateTimeImmutable($row->last_offline_at)
+                : null,
+            referredById: isset($row->referred_by_id)
+                ? (int) $row->referred_by_id
+                : null,
+            referredByCode: $row->referred_by_code ?? null,
+            referredOrderNumber: $row->referred_order_number ?? null,
+            preferredCurrency: $row->preferred_currency ?? null,
+            passwordInitiated: (bool) ($row->password_initiated ?? false),
+            vipRewardSettingId: isset($row->vip_reward_setting_id)
+                ? (int) $row->vip_reward_setting_id
+                : null,
+            globalId: $row->global_id ?? null,
         );
     }
 }

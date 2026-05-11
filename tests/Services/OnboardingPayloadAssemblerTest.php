@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
-use BrandBridge\Contracts\Mappers\PlayerTagMapperInterface;
 use BrandBridge\DTOs\V1\PlayerDetailsDTO;
 use BrandBridge\DTOs\V1\PlayerSnapshot;
 use BrandBridge\Enums\BrandKey;
@@ -20,14 +19,10 @@ function makeAssemblerWithNullPlayer(): OnboardingPayloadAssembler
     $detailsMapper = new class implements PlayerDetailsMapperInterface {
         public function map(string $sourcePlayerId): ?PlayerDetailsDTO { return null; }
     };
-    $tagMapper = new class implements PlayerTagMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
 
     return new OnboardingPayloadAssembler(
         $nullSnapshotMapper,
         $detailsMapper,
-        $tagMapper,
     );
 }
 
@@ -72,14 +67,10 @@ function makeAssemblerWithValidPlayer(): OnboardingPayloadAssembler
             );
         }
     };
-    $tagMapper = new class implements PlayerTagMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
-    };
 
     return new OnboardingPayloadAssembler(
         $snapshotMapper,
         $detailsMapper,
-        $tagMapper,
     );
 }
 

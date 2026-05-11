@@ -18,8 +18,8 @@ final class PlayerDetailsMapper implements PlayerDetailsMapperInterface
     public function map(string $sourcePlayerId): ?PlayerDetailsDTO
     {
         $row = $this->db->connection(config('brand-bridge.connection'))
-            ->table('users') // TODO: change to your players table
-            ->where('id', $sourcePlayerId) // TODO: change to your PK column
+            ->table('player_details') // TODO: change to your players table
+            ->where('player_id', $sourcePlayerId) // TODO: change to your PK column
             ->first();
 
         if (!$row) {
@@ -27,17 +27,58 @@ final class PlayerDetailsMapper implements PlayerDetailsMapperInterface
         }
 
         return new PlayerDetailsDTO(
-            gender: $row->gender ?? null, // TODO
-            address: $row->address ?? null, // TODO
-            city: $row->city ?? null, // TODO
-            postalCode: $row->postal_code ?? null, // TODO
-            region: $row->region ?? null, // TODO
-            status: PlayerStatus::from($row->status), // TODO: map your status values to PlayerStatus enum
-            totalDeposits: (float) ($row->total_deposits ?? 0), // TODO
-            totalWithdrawals: (float) ($row->total_withdrawals ?? 0), // TODO
-            netRevenue: (float) ($row->net_revenue ?? 0), // TODO
-            lastDepositAt: $row->last_deposit_at ? new \DateTimeImmutable($row->last_deposit_at) : null, // TODO
-            vipSince: $row->vip_since ? new \DateTimeImmutable($row->vip_since) : null, // TODO
+            firstName: $row->first_name ?? null,
+            lastName: $row->last_name ?? null,
+            middleName: $row->middle_name ?? null,
+            callingCode: $row->calling_code ?? null,
+            contactNumber: $row->contact_number
+                ?? $row->phone_number
+                ?? $row->phone
+                ?? null,
+            birthday: isset($row->birthday)
+                ? new \DateTimeImmutable($row->birthday)
+                : (
+                    isset($row->date_of_birth)
+                        ? new \DateTimeImmutable($row->date_of_birth)
+                        : null
+                ),
+            language: $row->language ?? null,
+            address: $row->address ?? null,
+            postCode: $row->post_code
+                ?? $row->postal_code
+                ?? null,
+            nationality: $row->nationality
+                ?? $row->country
+                ?? null,
+            gender: $row->gender ?? null,
+            playerId: $row->player_id
+                ?? $row->id
+                ?? null,
+            signupUrl: $row->signup_url ?? null,
+            countryId: $row->country_id ?? null,
+            stateId: $row->state_id ?? null,
+            cityId: $row->city_id ?? null,
+            payload: isset($row->payload)
+                ? (array) json_decode((string) $row->payload, true)
+                : null,
+            registerFrom: $row->register_from ?? null,
+            queryString: $row->query_string ?? null,
+            stateName: $row->state_name
+                ?? $row->region
+                ?? null,
+            cityName: $row->city_name
+                ?? $row->city
+                ?? null,
+            timezone: $row->timezone ?? null,
+            privateMode: (bool) ($row->private_mode ?? false),
+            isPep: (bool) ($row->is_pep ?? false),
+            hasSanctions: (bool) ($row->has_sanctions ?? false),
+            customAttributes: isset($row->custom_attributes)
+                ? (array) json_decode((string) $row->custom_attributes, true)
+                : null,
+            indicators: isset($row->indicators)
+                ? (array) json_decode((string) $row->indicators, true)
+                : null,
         );
     }
 }

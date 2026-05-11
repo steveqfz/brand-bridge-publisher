@@ -4,14 +4,6 @@ declare(strict_types=1);
 
 use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
-use BrandBridge\Contracts\Mappers\PlayerTagMapperInterface;
-use BrandBridge\Contracts\Mappers\VipContactMapperInterface;
-use BrandBridge\Contracts\Mappers\VipGroupMapperInterface;
-use BrandBridge\Contracts\Mappers\VipManagerMapperInterface;
-use BrandBridge\Contracts\Mappers\VipMilestoneMapperInterface;
-use BrandBridge\Contracts\Mappers\VipProfileMapperInterface;
-use BrandBridge\Contracts\Mappers\VipPromiseMapperInterface;
-use BrandBridge\Contracts\Mappers\VipReminderMapperInterface;
 use BrandBridge\DTOs\V1\PlayerDetailsDTO;
 use BrandBridge\DTOs\V1\PlayerSnapshot;
 use BrandBridge\Enums\BrandKey;
@@ -37,9 +29,6 @@ function bindNullMappers(\Illuminate\Foundation\Application $app): void
     });
     $app->bind(PlayerDetailsMapperInterface::class, fn () => new class implements PlayerDetailsMapperInterface {
         public function map(string $sourcePlayerId): ?PlayerDetailsDTO { return null; }
-    });
-    $app->bind(PlayerTagMapperInterface::class, fn () => new class implements PlayerTagMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
     });
 }
 
@@ -83,9 +72,6 @@ function bindValidMappers(\Illuminate\Foundation\Application $app): void
                 vipSince: new DateTimeImmutable('2024-06-01T00:00:00+00:00'),
             );
         }
-    });
-    $app->bind(PlayerTagMapperInterface::class, fn () => new class implements PlayerTagMapperInterface {
-        public function mapAll(string $sourcePlayerId): array { return []; }
     });
 }
 

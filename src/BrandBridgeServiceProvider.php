@@ -7,7 +7,6 @@ namespace BrandBridge;
 use BrandBridge\Contracts\EligibilityCheckerInterface;
 use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
-use BrandBridge\Contracts\Mappers\PlayerTagMapperInterface;
 use BrandBridge\Exceptions\MapperNotPublishedException;
 use BrandBridge\Services\DefaultEligibilityChecker;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -20,7 +19,6 @@ final class BrandBridgeServiceProvider extends ServiceProvider
     private const MAPPER_BINDINGS = [
         PlayerSnapshotMapperInterface::class => 'App\\BrandBridge\\Mappers\\PlayerSnapshotMapper',
         PlayerDetailsMapperInterface::class  => 'App\\BrandBridge\\Mappers\\PlayerDetailsMapper',
-        PlayerTagMapperInterface::class      => 'App\\BrandBridge\\Mappers\\PlayerTagMapper',
     ];
 
     public function register(): void
@@ -70,7 +68,6 @@ final class BrandBridgeServiceProvider extends ServiceProvider
         return [
             "$base/player-snapshot-mapper.stub" => "$target/PlayerSnapshotMapper.php",
             "$base/player-details-mapper.stub"  => "$target/PlayerDetailsMapper.php",
-            "$base/player-tag-mapper.stub"      => "$target/PlayerTagMapper.php",
         ];
     }
 

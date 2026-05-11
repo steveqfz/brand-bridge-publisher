@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\BrandBridge\Mappers;
 
-use BrandBridge\Contracts\Mappers\PlayerTagMapperInterface;
+use BrandBridge\Contracts\Mappers\OauthPlayersMapperInterface;
 use BrandBridge\DTOs\V1\PlayerTagDTO;
 use Illuminate\Database\DatabaseManager;
 
-final class PlayerTagMapper implements PlayerTagMapperInterface
+final class OauthPlayersMapper implements OauthPlayersMapperInterface
 {
     public function __construct(
         private readonly DatabaseManager $db,
@@ -18,14 +18,15 @@ final class PlayerTagMapper implements PlayerTagMapperInterface
     public function mapAll(string $sourcePlayerId): array
     {
         $rows = $this->db->connection(config('brand-bridge.connection'))
-            ->table('player_tags') // TODO: change to your tags table
+            ->table('oauth_players') // TODO: change to your tags table
             ->where('player_id', $sourcePlayerId) // TODO: change to your FK column
             ->get();
 
         return $rows->map(fn (object $row) => new PlayerTagDTO(
-            name: $row->name, // TODO
-            value: $row->value, // TODO
-            assignedAt: new \DateTimeImmutable($row->created_at), // TODO
+            playerId: $row->player_id, // TODO
+            providerPlayerId: $row->provider_player_id, // TODO
+            provider: $this->provider, // TODO
+            meta: $row->meta ?? [], // TODO
         ))->all();
     }
 }

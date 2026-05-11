@@ -6,7 +6,7 @@ namespace BrandBridge\Services;
 
 use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
 use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
-use BrandBridge\Contracts\Mappers\PlayerTagMapperInterface;
+use BrandBridge\Contracts\Mappers\OauthPlayersMapperInterface;
 use BrandBridge\DTOs\V1\OnboardingPayload;
 use BrandBridge\Enums\BrandKey;
 use BrandBridge\Enums\PayloadVersion;
@@ -17,12 +17,13 @@ final class OnboardingPayloadAssembler
     public function __construct(
         private readonly PlayerSnapshotMapperInterface $playerMapper,
         private readonly PlayerDetailsMapperInterface $detailsMapper,
-        private readonly PlayerTagMapperInterface $tagMapper,
+        private readonly OauthPlayersMapperInterface $oauthsMapper,
     ) {}
 
     public function assemble(string $sourcePlayerId): OnboardingPayload
     {
         $player = $this->playerMapper->map($sourcePlayerId);
+
         if ($player === null) {
             throw new PlayerNotFoundException($sourcePlayerId);
         }
@@ -35,7 +36,7 @@ final class OnboardingPayloadAssembler
             sourcePlayerId: $sourcePlayerId,
             player: $player,
             details: $this->detailsMapper->map($sourcePlayerId),
-            tags: $this->tagMapper->mapAll($sourcePlayerId),
+            oauths: $this->oauthsMapper->mapAll($sourcePlayerId),
             snapshotTakenAt: new \DateTimeImmutable(),
         );
     }
