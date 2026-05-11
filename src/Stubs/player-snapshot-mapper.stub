@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\BrandBridge\Mappers;
+
+use BrandBridge\Contracts\Mappers\PlayerSnapshotMapperInterface;
+use BrandBridge\DTOs\V1\PlayerSnapshot;
+use BrandBridge\Enums\BrandKey;
+use Illuminate\Database\DatabaseManager;
+
+final class PlayerSnapshotMapper implements PlayerSnapshotMapperInterface
+{
+    public function __construct(
+        private readonly DatabaseManager $db,
+    ) {}
+
+    public function map(string $sourcePlayerId): ?PlayerSnapshot
+    {
+        $row = $this->db->connection(config('brand-bridge.connection'))
+            ->table('users') // TODO: change to your players table
+            ->where('id', $sourcePlayerId) // TODO: change to your PK column
+            ->first();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new PlayerSnapshot(
+            sourcePlayerId: (string) $row->id, // TODO
+            sourceBrand: BrandKey::from(config('brand-bridge.brand_key')),
+            email: $row->email, // TODO
+            username: $row->username, // TODO
+            firstName: $row->first_name ?? null, // TODO
+            lastName: $row->last_name ?? null, // TODO
+            dateOfBirth: $row->date_of_birth ? new \DateTimeImmutable($row->date_of_birth) : null, // TODO
+            country: strtoupper((string) ($row->country ?? '')), // TODO
+            phoneNumber: $row->phone ?? null, // TODO
+            registeredAt: new \DateTimeImmutable($row->created_at), // TODO
+            lastLoginAt: $row->last_login_at ? new \DateTimeImmutable($row->last_login_at) : null, // TODO
+            kycReference: $row->kyc_id ?? null, // TODO
+            currency: strtoupper((string) ($row->currency ?? 'USD')), // TODO
+            language: $row->language ?? null, // TODO
+        );
+    }
+}

@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\BrandBridge\Mappers;
+
+use BrandBridge\Contracts\Mappers\VipGroupMapperInterface;
+use BrandBridge\DTOs\V1\Vip\VipGroupDTO;
+use BrandBridge\DTOs\V1\Vip\VipGroupSettingsDTO;
+use Illuminate\Database\DatabaseManager;
+
+final class VipGroupMapper implements VipGroupMapperInterface
+{
+    public function __construct(
+        private readonly DatabaseManager $db,
+    ) {}
+
+    public function map(string $sourcePlayerId): ?VipGroupDTO
+    {
+        $row = $this->db->connection(config('brand-bridge.connection'))
+            ->table('vip_groups') // TODO: change to your VIP groups table
+            ->join('vip_group_members', 'vip_groups.id', '=', 'vip_group_members.group_id') // TODO: change to your join
+            ->where('vip_group_members.player_id', $sourcePlayerId) // TODO: change to your FK column
+            ->select('vip_groups.*') // TODO
+            ->first();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new VipGroupDTO(
+            groupId: (string) $row->id, // TODO
+            name: $row->name, // TODO
+            description: $row->description ?? null, // TODO
+            settings: $this->mapSettings($row), // TODO
+        );
+    }
+
+    private function mapSettings(object $row): ?VipGroupSettingsDTO
+    {
+        if (!isset($row->max_members)) { // TODO: adjust condition for your schema
+            return null;
+        }
+
+        return new VipGroupSettingsDTO(
+            maxMembers: (int) $row->max_members, // TODO
+            autoAssign: (bool) ($row->auto_assign ?? false), // TODO
+            criteria: $row->criteria ?? null, // TODO
+        );
+    }
+}

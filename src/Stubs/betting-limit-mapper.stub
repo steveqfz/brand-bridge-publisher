@@ -1,0 +1,36 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\BrandBridge\Mappers;
+
+use BrandBridge\Contracts\Mappers\BettingLimitMapperInterface;
+use BrandBridge\DTOs\V1\ResponsibleGaming\BettingLimitDTO;
+use Illuminate\Database\DatabaseManager;
+
+final class BettingLimitMapper implements BettingLimitMapperInterface
+{
+    public function __construct(
+        private readonly DatabaseManager $db,
+    ) {}
+
+    public function map(string $sourcePlayerId): ?BettingLimitDTO
+    {
+        $row = $this->db->connection(config('brand-bridge.connection'))
+            ->table('betting_limits') // TODO: change to your betting limits table
+            ->where('player_id', $sourcePlayerId) // TODO: change to your FK column
+            ->first();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new BettingLimitDTO(
+            limitType: $row->limit_type, // TODO
+            amount: (float) $row->amount, // TODO
+            currency: strtoupper((string) $row->currency), // TODO
+            effectiveFrom: new \DateTimeImmutable($row->effective_from), // TODO
+            effectiveUntil: $row->effective_until ? new \DateTimeImmutable($row->effective_until) : null, // TODO
+        );
+    }
+}

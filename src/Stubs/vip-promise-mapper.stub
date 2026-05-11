@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\BrandBridge\Mappers;
+
+use BrandBridge\Contracts\Mappers\VipPromiseMapperInterface;
+use BrandBridge\DTOs\V1\Vip\VipPromiseDTO;
+use Illuminate\Database\DatabaseManager;
+
+final class VipPromiseMapper implements VipPromiseMapperInterface
+{
+    public function __construct(
+        private readonly DatabaseManager $db,
+    ) {}
+
+    /** @return VipPromiseDTO[] */
+    public function mapAll(string $sourcePlayerId): array
+    {
+        $rows = $this->db->connection(config('brand-bridge.connection'))
+            ->table('vip_promises') // TODO: change to your VIP promises table
+            ->where('player_id', $sourcePlayerId) // TODO: change to your FK column
+            ->orderBy('promised_at', 'desc') // TODO
+            ->get();
+
+        return $rows->map(fn (object $row) => new VipPromiseDTO(
+            promiseId: (string) $row->id, // TODO
+            title: $row->title, // TODO
+            description: $row->description ?? null, // TODO
+            promisedAt: new \DateTimeImmutable($row->promised_at), // TODO
+            fulfilledAt: $row->fulfilled_at ? new \DateTimeImmutable($row->fulfilled_at) : null, // TODO
+            status: $row->status, // TODO
+        ))->all();
+    }
+}

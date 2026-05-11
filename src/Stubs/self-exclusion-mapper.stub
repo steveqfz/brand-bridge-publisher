@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\BrandBridge\Mappers;
+
+use BrandBridge\Contracts\Mappers\SelfExclusionMapperInterface;
+use BrandBridge\DTOs\V1\ResponsibleGaming\SelfExclusionDTO;
+use Illuminate\Database\DatabaseManager;
+
+final class SelfExclusionMapper implements SelfExclusionMapperInterface
+{
+    public function __construct(
+        private readonly DatabaseManager $db,
+    ) {}
+
+    public function map(string $sourcePlayerId): ?SelfExclusionDTO
+    {
+        $row = $this->db->connection(config('brand-bridge.connection'))
+            ->table('self_exclusions') // TODO: change to your self-exclusions table
+            ->where('player_id', $sourcePlayerId) // TODO: change to your FK column
+            ->first();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new SelfExclusionDTO(
+            isActive: (bool) $row->is_active, // TODO
+            startDate: new \DateTimeImmutable($row->start_date), // TODO
+            endDate: $row->end_date ? new \DateTimeImmutable($row->end_date) : null, // TODO
+            reason: $row->reason ?? null, // TODO
+        );
+    }
+}

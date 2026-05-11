@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\BrandBridge\Mappers;
+
+use BrandBridge\Contracts\Mappers\VipManagerMapperInterface;
+use BrandBridge\DTOs\V1\Vip\VipManagerDTO;
+use BrandBridge\DTOs\V1\Vip\VipManagerLeaderDTO;
+use Illuminate\Database\DatabaseManager;
+
+final class VipManagerMapper implements VipManagerMapperInterface
+{
+    public function __construct(
+        private readonly DatabaseManager $db,
+    ) {}
+
+    public function map(string $sourcePlayerId): ?VipManagerDTO
+    {
+        $row = $this->db->connection(config('brand-bridge.connection'))
+            ->table('vip_managers') // TODO: change to your VIP managers table
+            ->join('vip_manager_assignments', 'vip_managers.id', '=', 'vip_manager_assignments.manager_id') // TODO: change to your join
+            ->where('vip_manager_assignments.player_id', $sourcePlayerId) // TODO: change to your FK column
+            ->select('vip_managers.*', 'vip_manager_assignments.assigned_at') // TODO
+            ->first();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new VipManagerDTO(
+            managerId: (string) $row->id, // TODO
+            name: $row->name, // TODO
+            email: $row->email, // TODO
+            leader: $this->mapLeader($row), // TODO
+            assignedAt: new \DateTimeImmutable($row->assigned_at), // TODO
+        );
+    }
+
+    private function mapLeader(object $managerRow): ?VipManagerLeaderDTO
+    {
+        if (!$managerRow->leader_id) { // TODO: adjust condition for your schema
+            return null;
+        }
+
+        $leader = $this->db->connection(config('brand-bridge.connection'))
+            ->table('vip_managers') // TODO: change to your leaders/managers table
+            ->where('id', $managerRow->leader_id) // TODO
+            ->first();
+
+        if (!$leader) {
+            return null;
+        }
+
+        return new VipManagerLeaderDTO(
+            leaderId: (string) $leader->id, // TODO
+            name: $leader->name, // TODO
+            email: $leader->email, // TODO
+        );
+    }
+}

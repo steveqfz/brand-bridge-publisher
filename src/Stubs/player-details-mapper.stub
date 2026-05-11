@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\BrandBridge\Mappers;
+
+use BrandBridge\Contracts\Mappers\PlayerDetailsMapperInterface;
+use BrandBridge\DTOs\V1\PlayerDetailsDTO;
+use BrandBridge\Enums\PlayerStatus;
+use Illuminate\Database\DatabaseManager;
+
+final class PlayerDetailsMapper implements PlayerDetailsMapperInterface
+{
+    public function __construct(
+        private readonly DatabaseManager $db,
+    ) {}
+
+    public function map(string $sourcePlayerId): ?PlayerDetailsDTO
+    {
+        $row = $this->db->connection(config('brand-bridge.connection'))
+            ->table('users') // TODO: change to your players table
+            ->where('id', $sourcePlayerId) // TODO: change to your PK column
+            ->first();
+
+        if (!$row) {
+            return null;
+        }
+
+        return new PlayerDetailsDTO(
+            gender: $row->gender ?? null, // TODO
+            address: $row->address ?? null, // TODO
+            city: $row->city ?? null, // TODO
+            postalCode: $row->postal_code ?? null, // TODO
+            region: $row->region ?? null, // TODO
+            status: PlayerStatus::from($row->status), // TODO: map your status values to PlayerStatus enum
+            totalDeposits: (float) ($row->total_deposits ?? 0), // TODO
+            totalWithdrawals: (float) ($row->total_withdrawals ?? 0), // TODO
+            netRevenue: (float) ($row->net_revenue ?? 0), // TODO
+            lastDepositAt: $row->last_deposit_at ? new \DateTimeImmutable($row->last_deposit_at) : null, // TODO
+            vipSince: $row->vip_since ? new \DateTimeImmutable($row->vip_since) : null, // TODO
+        );
+    }
+}
